@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dengue Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 150px;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            color: #4CAF50;
+            margin: 0;
+        }
+        .description {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        form {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        label:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            box-sizing: border-box;
+            background-color: #333333;
+            color: #ffffff;
+        }
+        button {
+            grid-column: span 3;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+            color: #4CAF50;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 16px;
+        }
+        .mosquito-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .mosquito {
+            width: 100px;
+            animation: move 2s linear infinite;
+        }
+        @keyframes move {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="img del logo en carpeta" alt="Logo">
+        <h1>Dengue Prediction</h1>
+    </div>
+    <div class="description">
+        Introduce los datos mensuales de casos de dengue para predecir futuros brotes. Este modelo utiliza redes neuronales LSTM para analizar y proporcionar predicciones precisas.
+    </div>
+    <div class="mosquito-container">
+        <img src="https://i.gifer.com/OjQv.gif" alt="Mosquito" class="mosquito">
+    </div>
+    <form id="predictionForm">
+        <label for="month1">Month 1: <input type="number" id="month1" name="month1" required></label>
+        <label for="month2">Month 2: <input type="number" id="month2" name="month2" required></label>
+        <label for="month3">Month 3: <input type="number" id="month3" name="month3" required></label>
+        <label for="month4">Month 4: <input type="number" id="month4" name="month4" required></label>
+        <label for="month5">Month 5: <input type="number" id="month5" name="month5" required></label>
+        <label for="month6">Month 6: <input type="number" id="month6" name="month6" required></label>
+        <label for="month7">Month 7: <input type="number" id="month7" name="month7" required></label>
+        <label for="month8">Month 8: <input type="number" id="month8" name="month8" required></label>
+        <label for="month9">Month 9: <input type="number" id="month9" name="month9" required></label>
+        <label for="month10">Month 10: <input type="number" id="month10" name="month10" required></label>
+        <label for="month11">Month 11: <input type="number" id="month11" name="month11" required></label>
+        <label for="month12">Month 12: <input type="number" id="month12" name="month12" required></label>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <div class="footer">
+        Integrantes: Sharon Camacho, Licht Alzamora, Sánchez Vanesae
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+                const response = await fetch('/car/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                const result = await response.json();
+                document.getElementById('result').textContent = `Prediction: ${result.prediction}`;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').textContent = 'An error occurred while making the prediction.';
+            }
+        });
+    </script>
+</body>
+</html>
